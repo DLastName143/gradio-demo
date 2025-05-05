@@ -1,0 +1,21 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: gradio-app
+spec:
+  replicas: 1
+  selector:
+    app: gradio
+  template:
+    metadata:
+      labels:
+        app: gradio
+    spec:
+      containers:
+        - name: gradio
+          image: gradio-app:latest  # Image from ImageStream
+          ports:
+            - containerPort: 7860
+  triggers:
+    - type: ConfigChange  # Trigger a build when the BuildConfig is modified
+    - type: ImageChange   # Trigger a build when the base image is changed
