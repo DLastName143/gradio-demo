@@ -1,18 +1,20 @@
-apiVersion: image.openshift.io/v1
-kind: ImageStream
-metadata:
-  name: gradio-app[root@cora-automation GradioProjects]# cat buildconfig.yaml
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   name: gradio-app-build
 spec:
   source:
-    type: Binary
+    type: Git
+    git:
+      uri: https://github.com/DLastName143/gradio-demo.git  # Replace with your actual GitHub repo URL
+      ref: main  # Optional: The branch to use (default: master)
   strategy:
     type: Docker
-    dockerStrategy: {}
+    dockerStrategy: {}  # Use Docker strategy to build
   output:
     to:
       kind: ImageStreamTag
-      name: gradio-app:latest
+      name: gradio-app:latest  # Name of the ImageStream to push the image
+  triggers:
+    - type: ConfigChange  # Trigger a build when the BuildConfig is modified
+    - type: ImageChange   # Trigger a build when the base image is changed
