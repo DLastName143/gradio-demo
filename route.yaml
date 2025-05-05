@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: gradio-route
+spec:
+  to:
+    kind: Service
+    name: gradio-service
+  port:
+    targetPort: 7860
+  tls:
+    termination: edge  # Optional
+    insecureEdgeTerminationPolicy: Redirect

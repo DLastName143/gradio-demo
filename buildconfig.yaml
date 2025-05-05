@@ -1,0 +1,18 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: gradio-app[root@cora-automation GradioProjects]# cat buildconfig.yaml
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: gradio-app-build
+spec:
+  source:
+    type: Binary
+  strategy:
+    type: Docker
+    dockerStrategy: {}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: gradio-app:latest
