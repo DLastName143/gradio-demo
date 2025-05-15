@@ -1,0 +1,56 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: fastapi-demo
+  labels:
+    app: fastapi-demo
+spec:
+  replicas: 1  # Number of replicas (pods) to run
+  selector:
+    app: fastapi-demo
+  template:
+    metadata:
+      labels:
+        app: fastapi-demo
+    spec:
+      containers:
+        - name: fastapi-demo
+          image: 'fastapi-demo:latest'  # Use the latest tag from ImageStream
+          ports:
+            - containerPort: 8000  # Port FastAPI will run on
+          env:
+            - name: ENVIRONMENT
+              value: "production"  # Optional: Set any environment variables
+          resources:
+            limits:
+              cpu: "500m"  # CPU limit
+              memory: "512Mi"  # Memory limit
+            requests:
+              cpu: "250m"  # Requested CPU
+              memory: "256Mi"  # Requested memory
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: fastapi-demo-route
+spec:
+  host: fastapi-demo.<namespace>.openshiftapps.com  # Replace <namespace> with your OpenShift namespace
+  to:
+    kind: Service
+    name: fastapi-demo-service
+  port:
+    targetPort: 8000
+  tls:
+    termination: edge  # Optional: Use TLS termination at the edge for secure access
