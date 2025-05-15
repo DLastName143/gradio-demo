@@ -1,0 +1,21 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: fastapi-modal
+spec:
+  replicas: 1
+  selector:
+    app: fastapi-modal
+  template:
+    metadata:
+      labels:
+        app: fastapi-modal
+    spec:
+      containers:
+        - name: fastapi-modal
+          image: "fastapi-modal:latest"  # Refers to the ImageStream and image created by BuildConfig
+          ports:
+            - containerPort: 8000  # Port exposed by FastAPI app
+          env:
+            - name: ENVIRONMENT
+              value: "production"  # Set your environment variable (optional)

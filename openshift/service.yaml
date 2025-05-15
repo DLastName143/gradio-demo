@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-modal-service
+spec:
+  selector:
+    app: fastapi-modal  # Should match the label in the DeploymentConfig
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000  # FastAPI app listens on port 8000

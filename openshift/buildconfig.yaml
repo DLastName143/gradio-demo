@@ -1,0 +1,18 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: fastapi-modal-build
+spec:
+  source:
+    type: Git
+    git:
+      uri: "https://github.com/hadrian89/fastapi-modal.git"  # Replace with your Git repository URL
+      ref: "main"  # Replace with your branch name (if not `main`)
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfile: "Dockerfile"  # Ensure you have a Dockerfile in the root of the repository
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "fastapi-modal:latest"  # This matches the ImageStream we defined above

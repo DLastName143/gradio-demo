@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: fastapi-modal-route
+spec:
+  to:
+    kind: Service
+    name: fastapi-modal-service  # Service we defined above
+  port:
+    targetPort: 80  # The port exposed by the Service
+  tls:
+    termination: edge  # Optional: Adds SSL termination at OpenShift's edge
+  wildcardPolicy: None
